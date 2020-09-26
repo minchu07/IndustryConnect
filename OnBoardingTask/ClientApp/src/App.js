@@ -16,14 +16,10 @@ export default class App extends Component {
       <div>
         <Router>
           <NavBar />
-
           <Route path="/" exact render={() => <Home />} />
           <Route path="/customer" exact render={() => <Customer />} />
-
           <Route path="/store" exact render={() => <Store />} />
-
           <Route path="/sales" exact render={() => <Sales />} />
-
           <Route path="/product" exact render={() => <Product />} />
         </Router>
       </div>

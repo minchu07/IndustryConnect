@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'semantic-ui-react';
+import { Table, Button, Icon } from 'semantic-ui-react';
 import axios from 'axios';
-// import ModalForm from './ModalForm';
+import Modal from './Modal';
+import AddStore from './AddStore';
 // import ButtonModal from './ButtonModal';
+import DeleteModal from './DeleteModal';
 
-export default class Customer extends Component {
+export default class Store extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      isopen: false,
+      open: false,
+      name: '',
+      address: '',
+      deletemodal: false,
+      id: 0,
     };
   }
 
   handleOpen = () => {
     this.setState({
-      isopen: true,
+      open: true,
     });
   };
   handleClose = () => {
     this.setState({
-      isopen: false,
+      open: false,
+      deletemodal: false,
     });
   };
   componentDidMount() {
     console.log('data');
+    this.fetchStoreDetails();
+  }
 
+  fetchStoreDetails = () => {
     axios
-      .get('/Customers/GetStore')
+      .get('/Stores/GetStore')
       .then((result) => {
         this.setState({
           data: result.data,
@@ -37,7 +47,57 @@ export default class Customer extends Component {
       .catch((error) => {
         console.log('Error: ' + error);
       });
-  }
+  };
+
+  handleInsert = (name, address) => {
+    const data = {
+      Name: name,
+      Address: address,
+    };
+
+    fetch('/Stores/PostStore', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Success:', result);
+        this.fetchStoreDetails();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    this.handleClose();
+  };
+
+  onDeleteAction = (id) => {
+    this.setState({ deletemodal: true, id: id });
+  };
+
+  handleDelete = () => {
+    fetch('/Stores/DeleteStore/' + this.state.id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Success:', result);
+        this.fetchStoreDetails();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    this.hideDeleteModal();
+  };
+
+  hideDeleteModal = () => {
+    this.setState({ deletemodal: false });
+  };
 
   render() {
     let items = this.state.data;
@@ -46,7 +106,22 @@ export default class Customer extends Component {
         <Button primary onClick={() => this.handleOpen()}>
           New Record
         </Button>
-        {/* <ModalForm openvalue={this.state.isopen} /> */}
+        <Modal
+          open={this.state.open}
+          onClose={this.handleClose}
+          header={'Add Store'}
+        >
+          <AddStore
+            //  type="Create"
+            onSubmit={this.handleInsert}
+          ></AddStore>
+          <DeleteModal
+            open={this.state.deletemodal}
+            onClose={this.hideDeleteModal}
+            header={'Delete Store Details'}
+            onDelete={this.handleDelete}
+          ></DeleteModal>
+        </Modal>
         <Table celled fixed singleLine compact selectable>
           <Table.Header>
             <Table.Row>
@@ -59,11 +134,29 @@ export default class Customer extends Component {
           <Table.Body>
             {items.map((item) => {
               return (
-                <Table.Row>
+                <Table.Row key={item.id}>
                   <Table.Cell>{item.name}</Table.Cell>
                   <Table.Cell>{item.address}</Table.Cell>
-                  <Table.Cell>Edit</Table.Cell>
-                  <Table.Cell>Delete</Table.Cell>
+                  <Table.Cell>
+                    <Button
+                      icon
+                      color="yellow"
+                      onClick={() => this.onEditAction(item)}
+                    >
+                      <Icon name="edit" />
+                      Edit
+                    </Button>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Button
+                      icon
+                      color="red"
+                      onClick={() => this.onDeleteAction(item.id)}
+                    >
+                      <Icon name="trash alternate" />
+                      Delete
+                    </Button>
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

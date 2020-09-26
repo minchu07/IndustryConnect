@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 import ModalComponent from './ModalComponent';
+import EditCustomer from './EditCustomer';
 // import ButtonModal from './ButtonModal';
 
 export default class Customer extends Component {
@@ -11,10 +12,11 @@ export default class Customer extends Component {
       data: [],
       formdata: [],
       show: false,
-      editshow: false,
+      editmodal: false,
       deleteshow: false,
       name: '',
       address: '',
+      id: '',
     };
   }
 
@@ -23,14 +25,17 @@ export default class Customer extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false });
+    this.setState({ show: false, editmodal: false });
+  };
+
+  hideEditModal = () => {
+    this.setState({ editmodal: false });
   };
 
   handleInsert = (name, address) => {
     const data = {
       Name: name,
       Address: address,
-      details: { name: '', address: '' },
     };
 
     fetch('/Customers/PostCustomer', {
@@ -41,36 +46,80 @@ export default class Customer extends Component {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        this.setState();
+      .then((result) => {
+        console.log('Success:', result);
+        this.getCustomerDetails();
+        this.setState({
+          data: result.data,
+        });
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   };
-  handleEdit = () => {};
-
-  handleDelete = () => {};
-
-  componentDidMount() {
-    console.log('data');
-
-    axios
-      .get('/Customers/GetCustomer')
+  handleDelete = (id) => {
+    console.log(id);
+    fetch('/Customers/DeleteCustomer/' + id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
       .then((result) => {
+        console.log('Success:', result);
+        this.getCustomerDetails();
         this.setState({
           data: result.data,
         });
-        console.log(result.data);
       })
       .catch((error) => {
-        console.log('Error: ' + error);
+        console.error('Error:', error);
       });
-  }
-  onEditAction = (id) => {
-    console.log(id);
-    this.setState({ show: true, details: id });
+  };
+
+  handleEdit = (name, address) => {
+    const data = {
+      Id: this.state.details.id,
+      Name: name,
+      Address: address,
+    };
+
+    fetch('/Customers/PutCustomer/' + this.state.details.id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((result) => {
+        console.log('Success:', result);
+        this.getCustomerDetails();
+        this.setState({
+          data: result.data,
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
+  getCustomerDetails = () => {
+    fetch('/Customers/GetCustomer')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+        this.setState({ data: data });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
+  componentDidMount = () => {
+    this.getCustomerDetails();
+  };
+  onEditAction = (details) => {
+    console.log(details);
+    this.setState({ editmodal: true, details: details });
   };
 
   render() {
@@ -84,8 +133,13 @@ export default class Customer extends Component {
           open={this.state.show}
           onClose={this.hideModal}
           onSubmit={this.handleInsert}
-          details={this.state.details}
         ></ModalComponent>
+        <EditCustomer
+          open={this.state.editmodal}
+          onClose={this.hideEditModal}
+          onSubmit={this.handleEdit}
+          details={this.state.details}
+        />
         <Table celled fixed singleLine compact selectable>
           <Table.Header>
             <Table.Row>
@@ -96,17 +150,17 @@ export default class Customer extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {items.map((item) => {
-              console.log(item);
+            {items.map((item, key) => {
+              console.log(item.id);
               return (
-                <Table.Row>
+                <Table.Row key={key}>
                   <Table.Cell>{item.name}</Table.Cell>
                   <Table.Cell>{item.address}</Table.Cell>
                   <Table.Cell>
                     <Button
                       icon
                       color="yellow"
-                      onClick={(item) => this.onEditAction(item.id)}
+                      onClick={() => this.onEditAction(item)}
                     >
                       <Icon name="edit" />
                       Edit
@@ -116,7 +170,7 @@ export default class Customer extends Component {
                     <Button
                       icon
                       color="red"
-                      onClick={() => this.handleDelete()}
+                      onClick={() => this.handleDelete(item.id)}
                     >
                       <Icon name="trash alternate" />
                       Delete

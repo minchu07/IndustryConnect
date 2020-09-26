@@ -70,7 +70,7 @@ namespace OnBoardingTask.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Customers

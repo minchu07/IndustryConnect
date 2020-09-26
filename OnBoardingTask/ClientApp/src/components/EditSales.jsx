@@ -9,7 +9,7 @@ import {
   Modal,
 } from 'semantic-ui-react';
 
-export default class ModalForm extends Component {
+export default class EditSales extends Component {
   constructor(props) {
     super(props);
     this.state = {
