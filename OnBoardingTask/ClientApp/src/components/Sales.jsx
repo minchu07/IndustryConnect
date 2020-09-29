@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Icon, Button } from 'semantic-ui-react';
-import axios from 'axios';
 import Modal from './Modal';
 import FormComponent from './FormComponent';
 import EditSales from './EditSales';
-
+import DeletModal from './DeleteModal';
 export default class Sales extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +17,9 @@ export default class Sales extends Component {
       products: [],
       stores: [],
       editmodal: '',
+      deletemodal: '',
+      id: '',
     };
-    this.updateListItems = this.updateListItems.bind(this);
   }
 
   showModal = () => {
@@ -52,7 +52,15 @@ export default class Sales extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
-        this.setState({ customers: data });
+        let customers = [];
+        data.forEach((c) => {
+          customers.push({
+            key: c.id,
+            value: c.id,
+            text: c.name,
+          });
+        });
+        this.setState({ customerList: customers });
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -62,7 +70,15 @@ export default class Sales extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
-        this.setState({ products: data });
+        let products = [];
+        data.forEach((p) => {
+          products.push({
+            key: p.id,
+            value: p.id,
+            text: p.name,
+          });
+        });
+        this.setState({ productList: products });
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -72,45 +88,19 @@ export default class Sales extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
-        this.setState({ stores: data });
+        let stores = [];
+        data.forEach((s) => {
+          stores.push({
+            key: s.id,
+            value: s.id,
+            text: s.name,
+          });
+        });
+        this.setState({ storeList: stores });
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-  };
-
-  updateListItems = () => {
-    let customers = [];
-    this.state.customers.forEach((c) => {
-      customers.push({
-        key: c.id,
-        value: c.id,
-        text: c.name,
-      });
-    });
-
-    let products = [];
-    this.state.products.forEach((p) => {
-      products.push({
-        key: p.id,
-        value: p.id,
-        text: p.name,
-      });
-    });
-
-    let stores = [];
-    this.state.stores.forEach((s) => {
-      stores.push({
-        key: s.id,
-        value: s.id,
-        text: s.name,
-      });
-    });
-    this.setState({
-      customerList: customers,
-      productList: products,
-      storeList: stores,
-    });
   };
 
   handleInsert = (custId, prodId, storeId, dateSold) => {
@@ -140,8 +130,62 @@ export default class Sales extends Component {
     this.hideModal();
   };
 
+  handleEdit = (custId, prodId, storeId, dateSold) => {
+    const data = {
+      ProductId: prodId,
+      CustomerId: custId,
+      StoreId: storeId,
+      DateSold: dateSold,
+    };
+    console.log('data' + prodId + 'store' + storeId);
+
+    fetch('/Sales/PutSales', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Success:', result);
+        this.fetchSalesDetails();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    this.hideModal();
+  };
+
+  handleDelete = () => {
+    fetch('/Sales/DeleteSales/' + this.state.id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Success:', result);
+        this.fetchSalesDetails();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    this.hideDeleteModal();
+  };
+
   onEditAction = (details) => {
     this.setState({ editmodal: true, details: details });
+  };
+  hideEditModal = () => {
+    this.setState({ editmodal: false });
+  };
+  onDeleteAction = (id) => {
+    this.setState({ deletemodal: true, id: id });
+  };
+  hideDeleteModal = () => {
+    this.setState({ deletemodal: false });
   };
 
   render() {
@@ -152,7 +196,6 @@ export default class Sales extends Component {
           primary
           onClick={() => {
             this.showModal();
-            this.updateListItems();
           }}
         >
           New Record
@@ -160,23 +203,39 @@ export default class Sales extends Component {
         <Modal
           open={this.state.show}
           onClose={this.hideModal}
-          header={'Add Customer'}
+          header={'Add Sales Details'}
         >
           <FormComponent
+            type="Create"
             onSubmit={this.handleInsert}
             products={this.state.productList}
             customers={this.state.customerList}
             stores={this.state.storeList}
           ></FormComponent>
         </Modal>
-        <Modal open={this.state.editmodal} onClose={this.hideModal}>
+        <Modal
+          open={this.state.editmodal}
+          onClose={this.hideEditModal}
+          header={'Edit Sales Details'}
+        >
           <EditSales
+            type="Edit"
             onSubmit={this.handleEdit}
             products={this.state.productList}
             customers={this.state.customerList}
             stores={this.state.storeList}
+            item={this.state.details}
           ></EditSales>
         </Modal>
+
+        <DeletModal
+          openmodal={this.state.deletemodal}
+          onClose={this.hideDeleteModal}
+          header={'Delete Store Details'}
+          onDelete={this.handleDelete}
+        >
+          <div>Sales details will be deleted</div>
+        </DeletModal>
 
         <Table celled fixed singleLine compact selectable>
           <Table.Header>
@@ -211,7 +270,7 @@ export default class Sales extends Component {
                     <Button
                       icon
                       color="red"
-                      onClick={() => this.handleDelete(item.id)}
+                      onClick={() => this.onDeleteAction(item.id)}
                     >
                       <Icon name="trash alternate" />
                       Delete

@@ -133,6 +133,7 @@ export default class ModalForm extends Component {
               <label>Date Sold</label>
               <Form.Input
                 type="date"
+                data-date-format="yyyy-mm-dd"
                 onChange={(e) =>
                   this.setState({
                     dateSold: e.target.value,

@@ -27,7 +27,6 @@ export default class Store extends Component {
   handleClose = () => {
     this.setState({
       open: false,
-      deletemodal: false,
     });
   };
   componentDidMount() {
@@ -75,6 +74,7 @@ export default class Store extends Component {
 
   onDeleteAction = (id) => {
     this.setState({ deletemodal: true, id: id });
+    console.log(this.state.deletemodal);
   };
 
   handleDelete = () => {
@@ -115,13 +115,15 @@ export default class Store extends Component {
             //  type="Create"
             onSubmit={this.handleInsert}
           ></AddStore>
-          <DeleteModal
-            open={this.state.deletemodal}
-            onClose={this.hideDeleteModal}
-            header={'Delete Store Details'}
-            onDelete={this.handleDelete}
-          ></DeleteModal>
         </Modal>
+        <DeleteModal
+          openmodal={this.state.deletemodal}
+          onClose={this.hideDeleteModal}
+          header={'Delete Store Details'}
+          onDelete={this.handleDelete}
+        >
+          <div>Store details will be deleted</div>
+        </DeleteModal>
         <Table celled fixed singleLine compact selectable>
           <Table.Header>
             <Table.Row>

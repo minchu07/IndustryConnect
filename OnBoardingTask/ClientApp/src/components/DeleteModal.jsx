@@ -11,16 +11,14 @@ export default class DeleteModal extends Component {
     return (
       <div>
         <Modal
-          open={this.props.open}
+          open={this.props.openmodal}
           onClose={() => {
             this.props.onClose();
           }}
           size="small"
         >
           <Modal.Header> {this.props.header} </Modal.Header>
-          <Modal.Content>
-            <div>Are you Sure?</div>
-          </Modal.Content>
+          <Modal.Content>{this.props.children}</Modal.Content>
           <Modal.Actions>
             <Button
               icon

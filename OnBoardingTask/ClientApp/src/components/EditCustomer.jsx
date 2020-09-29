@@ -6,10 +6,10 @@ import FormComponent from './FormComponent';
 export default class EditCustomer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      address: '',
-    };
+    this.state = { name: '', address: '' };
+  }
+  componentDidMount() {
+    console.log(this.props);
   }
 
   render() {
@@ -32,16 +32,15 @@ export default class EditCustomer extends Component {
                 this.props.onClose();
               }}
             >
-              <Form.Field required>
+              <Form.Field>
                 <label>Name</label>
                 <Form.Input
                   onChange={(e) => this.setState({ name: e.target.value })}
                   placeholder="Name"
                   value={this.state.name}
-                  required
                 />
               </Form.Field>
-              <Form.Field required>
+              <Form.Field>
                 <label>Address</label>
                 <Form.Input
                   onChange={(e) =>
@@ -51,7 +50,6 @@ export default class EditCustomer extends Component {
                   }
                   placeholder="Address"
                   value={this.state.address}
-                  required
                 />
               </Form.Field>
             </Form>

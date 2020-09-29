@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 
-export default class AddProduct extends Component {
+export default class EditProduct extends Component {
   constructor(props) {
     super(props);
     this.state = { ...props, name: '', price: '' };
   }
   componentDidMount() {
-    console.log(this.props);
+    this.setState({ name: this.state.item.name, price: this.state.item.price });
   }
+  handleChange = (e) => {
+    e.persist();
+
+    this.setState({ [e.target.name]: e.target.value });
+  };
   render() {
     return (
       <div>
@@ -22,7 +27,8 @@ export default class AddProduct extends Component {
           <Form.Field>
             <label>Name</label>
             <Form.Input
-              onChange={(e) => this.setState({ name: e.target.value })}
+              name="name"
+              onChange={this.handleChange}
               placeholder="Name"
               value={this.state.name}
             />
@@ -30,12 +36,8 @@ export default class AddProduct extends Component {
           <Form.Field>
             <label>Price</label>
             <Form.Input
-              type="number"
-              onChange={(e) =>
-                this.setState({
-                  price: e.target.value,
-                })
-              }
+              name="price"
+              onChange={this.handleChange}
               placeholder="0.00"
               value={this.state.price}
             />

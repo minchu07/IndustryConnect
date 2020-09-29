@@ -17,7 +17,7 @@ namespace OnBoardingTask.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        [Column(TypeName = "decimal(18, 0)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal Price { get; set; }
 
         [InverseProperty("Product")]

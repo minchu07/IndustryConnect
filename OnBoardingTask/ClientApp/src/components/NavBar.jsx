@@ -17,9 +17,10 @@ export default class App extends Component {
     return (
       <div>
         <Container fluid>
-          <Menu>
+          <Menu inverted size="large" fluid stackable>
             <Menu.Item
               as={NavLink}
+              color="black"
               to="/"
               name="Home"
               active={activeItem === 'Home'}
@@ -31,6 +32,7 @@ export default class App extends Component {
               as={NavLink}
               to="/customer"
               name="Customer"
+              color="black"
               active={activeItem === 'Customer'}
               content="Customer"
               onClick={this.handleItemClick}
@@ -39,6 +41,7 @@ export default class App extends Component {
               as={NavLink}
               to="/store"
               name="Store"
+              color="black"
               active={activeItem === 'Store'}
               content="Store"
               onClick={this.handleItemClick}
@@ -47,6 +50,7 @@ export default class App extends Component {
               as={NavLink}
               to="/product"
               name="Product"
+              color="black"
               active={activeItem === 'Product'}
               content="Product"
               onClick={this.handleItemClick}
@@ -55,6 +59,7 @@ export default class App extends Component {
               as={NavLink}
               to="/sales"
               name="Sales"
+              color="black"
               active={activeItem === 'Sales'}
               content="Sales"
               onClick={this.handleItemClick}

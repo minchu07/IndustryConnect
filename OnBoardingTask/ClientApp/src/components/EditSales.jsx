@@ -13,21 +13,36 @@ export default class EditSales extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ...props,
       name: '',
       address: '',
       customerList: [],
       productList: [],
       storesList: [],
-      productsId: 0,
+      productId: 0,
       customerId: 0,
       storeId: 0,
       dateSold: '',
     };
   }
   componentDidMount = () => {
-    console.log(this.props);
+    console.log(this.state.item.dateSold);
+    this.setState({
+      customerId: this.state.item.customerId,
+      productId: this.state.item.productId,
+      storeId: this.state.item.storeId,
+      dateSold: this.state.item.dateSold,
+    });
   };
 
+  updateStateValues = () => {
+    console.log(this.props);
+    //this.setState({ ...this.props });
+  };
+  handleChange = (e) => {
+    e.persist();
+    this.setState({ [e.target.name]: e.target.value });
+  };
   render() {
     if (this.props.type === 'Edit') {
       return (
@@ -36,30 +51,61 @@ export default class EditSales extends Component {
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
-              this.props.onSubmit(this.state.name, this.state.address);
-              this.props.onClose();
+              this.props.onSubmit(
+                this.state.customerId,
+                this.state.productId,
+                this.state.storeId,
+                this.state.dateSold
+              );
             }}
           >
-            <Form.Field required>
-              <label>Name</label>
-              <Form.Input
-                onChange={(e) => this.setState({ name: e.target.value })}
-                placeholder="Name"
-                value={this.state.name}
-                required
+            <Form.Field>
+              <label>Customer Name</label>
+              <Dropdown
+                name="customerId"
+                placeholder="Customer"
+                fluid
+                search
+                selection
+                options={this.props.customers}
+                value={this.state.customerId}
+                onChange={this.handleChange}
               />
             </Form.Field>
-            <Form.Field required>
-              <label>Address</label>
+            <Form.Field>
+              <label>Product Name</label>
+              <Dropdown
+                name="productId"
+                placeholder="Product"
+                fluid
+                search
+                selection
+                options={this.props.products}
+                value={this.state.productId}
+                onChange={this.handleChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>Store Name</label>
+              <Dropdown
+                name="storeId"
+                placeholder="Store"
+                fluid
+                search
+                selection
+                options={this.props.stores}
+                value={this.state.storeId}
+                onChange={this.handleChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>Date Sold</label>
               <Form.Input
-                onChange={(e) =>
-                  this.setState({
-                    address: e.target.value,
-                  })
-                }
-                placeholder="Address"
-                value={this.state.address}
-                required
+                name="dateSold"
+                type="date"
+                onChange={this.handleChange}
+                placeholder="Date Sold"
+                value={this.state.dateSold}
               />
             </Form.Field>
           </Form>
