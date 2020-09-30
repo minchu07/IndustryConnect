@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 
-export default class AddStore extends Component {
+export default class EditCustomer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      address: '',
-    };
+    this.state = { ...props, name: '', address: '' };
   }
+  componentDidMount() {
+    this.setState({
+      name: this.state.rowData.name,
+      address: this.state.rowData.address,
+    });
+  }
+  handleChange = (e) => {
+    e.persist();
 
+    this.setState({ [e.target.name]: e.target.value });
+  };
   render() {
     return (
       <div>
@@ -20,26 +27,22 @@ export default class AddStore extends Component {
             this.props.onSubmit(this.state.name, this.state.address);
           }}
         >
-          <Form.Field required>
+          <Form.Field>
             <label>Name</label>
             <Form.Input
-              onChange={(e) => this.setState({ name: e.target.value })}
+              name="name"
+              onChange={this.handleChange}
               placeholder="Name"
               value={this.state.name}
-              required
             />
           </Form.Field>
-          <Form.Field required>
+          <Form.Field>
             <label>Address</label>
             <Form.Input
-              onChange={(e) =>
-                this.setState({
-                  address: e.target.value,
-                })
-              }
+              name="address"
+              onChange={this.handleChange}
               placeholder="Address"
               value={this.state.address}
-              required
             />
           </Form.Field>
         </Form>

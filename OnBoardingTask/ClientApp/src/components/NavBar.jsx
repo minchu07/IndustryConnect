@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 //import { Route } from 'react-router';
 //import Customer from './components/Customer';
 //import Sales from './components/Sales';
-import { NavLink, withRouter } from 'react-router-dom';
-import { Container, Menu } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
+import { Container, Menu, Header } from 'semantic-ui-react';
 
-export default class App extends Component {
-  static displayName = App.name;
+export default class NavBar extends Component {
+  static displayName = NavBar.name;
   state = {};
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });

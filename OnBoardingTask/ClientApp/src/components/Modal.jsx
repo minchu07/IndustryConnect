@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Icon, Header, Image, Modal } from 'semantic-ui-react';
-import axios from 'axios';
-import FormComponent from './FormComponent';
+import { Button, Icon, Modal } from 'semantic-ui-react';
 
 export default class ModalForm extends Component {
   constructor(props) {

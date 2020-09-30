@@ -210,7 +210,6 @@ export default class Customer extends Component {
               })}
             </Table.Body>
           </Table>
-          <Header as="h4">© 2020 - Minchu Baby</Header>
         </Container>
       </div>
     );

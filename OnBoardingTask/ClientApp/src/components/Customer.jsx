@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Table,
-  Button,
-  Icon,
-  Header,
-  Container,
-  Segment,
-} from 'semantic-ui-react';
-import ModalComponent from './ModalComponent';
-import EditCustomer from './EditCustomer';
+import { Table, Button, Icon, Header, Container } from 'semantic-ui-react';
+import EditForm from './EditForm';
 import DeleteModal from './DeleteModal';
+import Modal from './Modal';
+import CreateForm from './CreateForm';
 
 export default class Customer extends Component {
   constructor(props) {
@@ -23,6 +17,7 @@ export default class Customer extends Component {
       name: '',
       address: '',
       id: '',
+      rowDetails: '',
     };
   }
 
@@ -59,6 +54,7 @@ export default class Customer extends Component {
       .catch((error) => {
         console.error('Error:', error);
       });
+    this.hideModal();
   };
   handleDelete = () => {
     fetch('/Customers/DeleteCustomer/' + this.state.id, {
@@ -80,12 +76,12 @@ export default class Customer extends Component {
 
   handleEdit = (name, address) => {
     const data = {
-      Id: this.state.details.id,
+      Id: this.state.rowDetails.id,
       Name: name,
       Address: address,
     };
 
-    fetch('/Customers/PutCustomer/' + this.state.details.id, {
+    fetch('/Customers/PutCustomer/' + this.state.rowDetails.id, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -95,13 +91,11 @@ export default class Customer extends Component {
       .then((result) => {
         console.log('Success:', result);
         this.getCustomerDetails();
-        this.setState({
-          data: result.data,
-        });
       })
       .catch((error) => {
         console.error('Error:', error);
       });
+    this.hideEditModal();
   };
   getCustomerDetails = () => {
     fetch('/Customers/GetCustomer')
@@ -119,7 +113,7 @@ export default class Customer extends Component {
   };
   onEditAction = (details) => {
     console.log('OnEdit' + details);
-    this.setState({ editmodal: true, details: details });
+    this.setState({ editmodal: true, rowDetails: details });
   };
   onDeleteAction = (id) => {
     this.setState({ deletemodal: true, id: id });
@@ -129,28 +123,38 @@ export default class Customer extends Component {
   hideDeleteModal = () => {
     this.setState({ deletemodal: false });
   };
+  hideEditModal = () => {
+    this.setState({ editmodal: false });
+  };
 
   render() {
     let items = this.state.data;
     return (
       <div>
         <br />
-        <Container compact>
+        <Container>
           <Header as="h3" content="Customer Records" textAlign="left" />
           <Button primary onClick={() => this.showModal()}>
             New Customer
           </Button>
-          <ModalComponent
+          <Modal
             open={this.state.show}
             onClose={this.hideModal}
-            onSubmit={this.handleInsert}
-          ></ModalComponent>
-          <EditCustomer
+            header={'Add Customer'}
+          >
+            <CreateForm onSubmit={this.handleInsert}></CreateForm>
+          </Modal>
+          <Modal
             open={this.state.editmodal}
             onClose={this.hideEditModal}
-            onSubmit={this.handleEdit}
-            details={this.state.details}
-          />
+            header={'Edit Customer Details'}
+          >
+            <EditForm
+              type="Edit"
+              onSubmit={this.handleEdit}
+              rowData={this.state.rowDetails}
+            ></EditForm>
+          </Modal>
           <DeleteModal
             openmodal={this.state.deletemodal}
             onClose={this.hideDeleteModal}
@@ -159,7 +163,7 @@ export default class Customer extends Component {
           >
             <div>Customer details will be deleted</div>
           </DeleteModal>
-          <Table celled fluid singleLine compact>
+          <Table celled singleLine compact>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -179,7 +183,7 @@ export default class Customer extends Component {
                       <Button
                         icon
                         color="yellow"
-                        onClick={(e) => this.onEditAction(item)}
+                        onClick={() => this.onEditAction(item)}
                       >
                         <Icon name="edit" />
                         Edit
@@ -200,7 +204,6 @@ export default class Customer extends Component {
               })}
             </Table.Body>
           </Table>
-          <Header as="h4">© 2020 - Minchu Baby</Header>
         </Container>
       </div>
     );

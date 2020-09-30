@@ -12,13 +12,11 @@ import {
 export default class EditSales extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       ...props,
       name: '',
       address: '',
-      customerList: [],
-      productList: [],
-      storesList: [],
       productId: 0,
       customerId: 0,
       storeId: 0,
@@ -27,6 +25,7 @@ export default class EditSales extends Component {
   }
   componentDidMount = () => {
     console.log(this.state.item.dateSold);
+
     this.setState({
       customerId: this.state.item.customerId,
       productId: this.state.item.productId,
@@ -39,11 +38,18 @@ export default class EditSales extends Component {
     console.log(this.props);
     //this.setState({ ...this.props });
   };
-  handleChange = (e) => {
-    e.persist();
-    this.setState({ [e.target.name]: e.target.value });
+  handleChange = (e, { name, value }) => {
+    this.setState({ [name]: value });
   };
   render() {
+    let dateTemp = new Date(this.state.dateSold);
+    let monthTemp =
+      dateTemp.getMonth() + 1 < 10
+        ? '0' + (dateTemp.getMonth() + 1)
+        : dateTemp.getMonth() + 1;
+    let day =
+      dateTemp.getDate() < 10 ? '0' + dateTemp.getDate() : dateTemp.getDate();
+    let date = dateTemp.getFullYear() + '-' + monthTemp + '-' + day;
     if (this.props.type === 'Edit') {
       return (
         <div>
@@ -105,7 +111,7 @@ export default class EditSales extends Component {
                 type="date"
                 onChange={this.handleChange}
                 placeholder="Date Sold"
-                value={this.state.dateSold}
+                value={date}
               />
             </Form.Field>
           </Form>
