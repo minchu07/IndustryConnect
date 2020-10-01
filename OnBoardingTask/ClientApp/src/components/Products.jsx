@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button, Icon, Container, Header } from 'semantic-ui-react';
+import {
+  Table,
+  Button,
+  Icon,
+  Container,
+  Header,
+  Grid,
+  Pagination,
+} from 'semantic-ui-react';
 import axios from 'axios';
 import Modal from './Modal';
 import AddProduct from './AddProduct';
@@ -16,9 +24,13 @@ export default class Customer extends Component {
       id: 0,
       type: '',
       editmodal: false,
+      page: 1,
+      itemsPerPage: 1,
     };
   }
-
+  setPageNum = (event, { activePage }) => {
+    this.setState({ page: activePage });
+  };
   handleOpen = () => {
     this.setState({
       open: true,
@@ -132,84 +144,106 @@ export default class Customer extends Component {
 
   render() {
     let items = this.state.data;
+    const itemsPerPage = 10;
+    const { page } = this.state;
+    const totalPages = items.length / itemsPerPage;
+    const data = items.slice(
+      (page - 1) * itemsPerPage,
+      (page - 1) * itemsPerPage + itemsPerPage
+    );
     return (
       <div>
         <br />
         <Container>
-          <Header as="h3" content="Product Details" textAlign="left" />
-          <Button primary onClick={() => this.handleOpen()}>
-            New Record
-          </Button>
-          <Modal
-            open={this.state.open}
-            onClose={this.handleClose}
-            header={'Add Products'}
-          >
-            <AddProduct
-              type={this.state.type}
-              item={this.state.item}
-              onSubmit={this.handleInsert}
-            ></AddProduct>
-          </Modal>
-          <Modal
-            open={this.state.editmodal}
-            onClose={this.closeEditModal}
-            header={'Edit Product Details'}
-          >
-            <EditProduct
-              type={this.state.type}
-              item={this.state.item}
-              onSubmit={this.handleEdit}
-            ></EditProduct>
-          </Modal>
-          <DeleteModal
-            openmodal={this.state.deletemodal}
-            onClose={this.hideDeleteModal}
-            header={'Delete Product Details'}
-            onDelete={this.handleDelete}
-          >
-            <div>Product details will be deleted</div>
-          </DeleteModal>
-          <Table celled fixed singleLine compact selectable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Price</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {items.map((item) => {
-                return (
-                  <Table.Row key={item.id}>
-                    <Table.Cell>{item.name}</Table.Cell>
-                    <Table.Cell>{item.price}</Table.Cell>
-                    <Table.Cell>
-                      <Button
-                        icon
-                        color="yellow"
-                        onClick={() => this.onEditAction(item)}
-                      >
-                        <Icon name="edit" />
-                        Edit
-                      </Button>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Button
-                        icon
-                        color="red"
-                        onClick={() => this.onDeleteAction(item.id)}
-                      >
-                        <Icon name="trash alternate" />
-                        Delete
-                      </Button>
-                    </Table.Cell>
+          <Grid>
+            <Grid.Row>
+              <Header as="h3" content="Product Details" textAlign="left" />
+            </Grid.Row>
+            <Grid.Row>
+              <Button primary onClick={() => this.handleOpen()}>
+                New Record
+              </Button>
+            </Grid.Row>
+
+            <Modal
+              open={this.state.open}
+              onClose={this.handleClose}
+              header={'Add Products'}
+            >
+              <AddProduct
+                type={this.state.type}
+                item={this.state.item}
+                onSubmit={this.handleInsert}
+              ></AddProduct>
+            </Modal>
+            <Modal
+              open={this.state.editmodal}
+              onClose={this.closeEditModal}
+              header={'Edit Product Details'}
+            >
+              <EditProduct
+                type={this.state.type}
+                item={this.state.item}
+                onSubmit={this.handleEdit}
+              ></EditProduct>
+            </Modal>
+            <DeleteModal
+              openmodal={this.state.deletemodal}
+              onClose={this.hideDeleteModal}
+              header={'Delete Product Details'}
+              onDelete={this.handleDelete}
+            />
+            <Grid.Row>
+              <Table celled fixed singleLine compact selectable>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Price</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
                   </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
+                </Table.Header>
+                <Table.Body>
+                  {data.map((item) => {
+                    return (
+                      <Table.Row key={item.id}>
+                        <Table.Cell>{item.name}</Table.Cell>
+                        <Table.Cell>{item.price}</Table.Cell>
+                        <Table.Cell>
+                          <Button
+                            icon
+                            color="yellow"
+                            onClick={() => this.onEditAction(item)}
+                          >
+                            <Icon name="edit" />
+                            Edit
+                          </Button>
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Button
+                            icon
+                            color="red"
+                            onClick={() => this.onDeleteAction(item.id)}
+                          >
+                            <Icon name="trash alternate" />
+                            Delete
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  })}
+                </Table.Body>
+              </Table>
+            </Grid.Row>
+            <Grid.Row>
+              <Pagination
+                activePage={page}
+                totalPages={totalPages}
+                siblingRange={1}
+                onPageChange={this.setPageNum}
+              />
+            </Grid.Row>
+          </Grid>
         </Container>
       </div>
     );

@@ -18,7 +18,7 @@ export default class DeleteModal extends Component {
           size="small"
         >
           <Modal.Header> {this.props.header} </Modal.Header>
-          <Modal.Content>{this.props.children}</Modal.Content>
+          <Modal.Content>Are you sure?</Modal.Content>
           <Modal.Actions>
             <Button
               icon

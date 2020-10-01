@@ -19,15 +19,16 @@ export default class AddProduct extends Component {
             this.props.onSubmit(this.state.name, this.state.price);
           }}
         >
-          <Form.Field>
+          <Form.Field required>
             <label>Name</label>
             <Form.Input
               onChange={(e) => this.setState({ name: e.target.value })}
               placeholder="Name"
               value={this.state.name}
+              required
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required>
             <label>Price</label>
             <Form.Input
               type="number"
@@ -38,6 +39,7 @@ export default class AddProduct extends Component {
               }
               placeholder="0.00"
               value={this.state.price}
+              required
             />
           </Form.Field>
         </Form>

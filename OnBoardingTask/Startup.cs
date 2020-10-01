@@ -32,7 +32,7 @@ namespace OnBoardingTask
             });
 
 
-                var connection = Configuration.GetConnectionString("ReactDemo");
+                var connection = Configuration.GetConnectionString("OnBoardTask");
                 services.AddDbContext<OnBoardtaskContext>(options => options.UseSqlServer(connection));
                 services.AddControllersWithViews(); services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

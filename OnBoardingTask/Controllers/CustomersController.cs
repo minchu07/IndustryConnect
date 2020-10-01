@@ -98,7 +98,7 @@ namespace OnBoardingTask.Controllers
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
 
-            return customer;
+            return Ok();
         }
 
         private bool CustomerExists(int id)

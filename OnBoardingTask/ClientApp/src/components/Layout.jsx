@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Row } from 'reactstrap';
-import { Container, Header } from 'semantic-ui-react';
+import { Container, Grid, Header } from 'semantic-ui-react';
 import NavBar from './NavBar';
 
 export class Layout extends Component {
@@ -11,11 +10,12 @@ export class Layout extends Component {
       <div>
         <NavBar />
         <Container>
-          <Row>{this.props.children}</Row>
-          <br />
-          <Row>
-            <Header as="h4">&copy; 2020 - Minchu Baby</Header>
-          </Row>
+          <Grid>
+            <Grid.Row>{this.props.children}</Grid.Row>
+            <Grid.Row>
+              <Header as="h4">&copy; 2020 - Minchu Baby</Header>
+            </Grid.Row>
+          </Grid>
         </Container>
       </div>
     );
