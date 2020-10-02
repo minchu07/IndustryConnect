@@ -32,7 +32,6 @@ namespace OnBoardingTask.Controllers
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
-            Console.WriteLine("inside getcustomer");
             if (customer == null)
             {
                 return NotFound();
@@ -81,7 +80,6 @@ namespace OnBoardingTask.Controllers
         {
             _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
-            Console.WriteLine("inside Postcustomer");
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
