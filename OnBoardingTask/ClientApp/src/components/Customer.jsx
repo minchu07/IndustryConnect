@@ -28,6 +28,7 @@ export default class Customer extends Component {
       rowDetails: '',
       page: 2,
       itemsPerPage: 10,
+      url: 'https://mvponboardingtask.azurewebsites.net',
     };
   }
 

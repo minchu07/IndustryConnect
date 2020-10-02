@@ -8,7 +8,6 @@ import {
   Grid,
   Pagination,
 } from 'semantic-ui-react';
-import axios from 'axios';
 import Modal from './Modal';
 import AddProduct from './AddProduct';
 import DeleteModal from './DeleteModal';
@@ -47,16 +46,14 @@ export default class Customer extends Component {
     this.fetchProductDetails();
   };
   fetchProductDetails() {
-    axios
-      .get('/Products/GetProduct')
-      .then((result) => {
-        this.setState({
-          data: result.data,
-        });
-        console.log(result.data);
+    fetch('/Products/GetProduct')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+        this.setState({ data: data });
       })
       .catch((error) => {
-        console.log('Error: ' + error);
+        console.error('Error:', error);
       });
   }
 

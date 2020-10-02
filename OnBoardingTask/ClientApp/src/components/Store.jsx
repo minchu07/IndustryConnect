@@ -8,7 +8,6 @@ import {
   Grid,
   Pagination,
 } from 'semantic-ui-react';
-import axios from 'axios';
 import Modal from './Modal';
 import CreateForm from './CreateForm';
 import EditForm from './EditForm';
@@ -48,16 +47,14 @@ export default class Store extends Component {
   }
 
   fetchStoreDetails = () => {
-    axios
-      .get('/Stores/GetStore')
-      .then((result) => {
-        this.setState({
-          data: result.data,
-        });
-        console.log(result.data);
+    fetch('/Stores/GetStore')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+        this.setState({ data: data });
       })
       .catch((error) => {
-        console.log('Error: ' + error);
+        console.error('Error:', error);
       });
   };
 

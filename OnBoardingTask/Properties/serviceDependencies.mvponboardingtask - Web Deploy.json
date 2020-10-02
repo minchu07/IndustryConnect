@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/onboardingtaskmvpdbserver/databases/OnBoardingTask_db",
+      "type": "mssql.azure",
+      "connectionId": "OnBoardTask",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}
