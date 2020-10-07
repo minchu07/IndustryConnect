@@ -13,7 +13,7 @@ import CreateForm from './CreateForm';
 import EditForm from './EditForm';
 import DeleteModal from './DeleteModal';
 
-export default class Store extends Component {
+export default class Stores extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -161,20 +161,20 @@ export default class Store extends Component {
             </Grid.Row>
             <Grid.Row>
               <Button primary onClick={() => this.handleOpen()}>
-                New Record
+                New Store
               </Button>
             </Grid.Row>
             <Modal
               open={this.state.open}
               onClose={this.handleClose}
-              header={'Add Store'}
+              header={'Create Store'}
             >
               <CreateForm onSubmit={this.handleInsert}></CreateForm>
             </Modal>
             <Modal
               open={this.state.editmodal}
               onClose={this.hideEditModal}
-              header={'Edit Store Details'}
+              header={'Edit Store'}
             >
               <EditForm
                 type="Edit"
@@ -185,7 +185,7 @@ export default class Store extends Component {
             <DeleteModal
               openmodal={this.state.deletemodal}
               onClose={this.hideDeleteModal}
-              header={'Delete Store Details'}
+              header={'Delete Store'}
               onDelete={this.handleDelete}
             />
             <Grid.Row>

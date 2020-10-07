@@ -13,7 +13,7 @@ import AddProduct from './AddProduct';
 import DeleteModal from './DeleteModal';
 import EditProduct from './EditProduct';
 
-export default class Customer extends Component {
+export default class Products extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -158,14 +158,14 @@ export default class Customer extends Component {
             </Grid.Row>
             <Grid.Row>
               <Button primary onClick={() => this.handleOpen()}>
-                New Record
+                New Product
               </Button>
             </Grid.Row>
 
             <Modal
               open={this.state.open}
               onClose={this.handleClose}
-              header={'Add Products'}
+              header={'Create Product'}
             >
               <AddProduct
                 type={this.state.type}
@@ -176,7 +176,7 @@ export default class Customer extends Component {
             <Modal
               open={this.state.editmodal}
               onClose={this.closeEditModal}
-              header={'Edit Product Details'}
+              header={'Edit Product'}
             >
               <EditProduct
                 type={this.state.type}
@@ -187,7 +187,7 @@ export default class Customer extends Component {
             <DeleteModal
               openmodal={this.state.deletemodal}
               onClose={this.hideDeleteModal}
-              header={'Delete Product Details'}
+              header={'Delete Product'}
               onDelete={this.handleDelete}
             />
             <Grid.Row>
@@ -205,7 +205,7 @@ export default class Customer extends Component {
                     return (
                       <Table.Row key={item.id}>
                         <Table.Cell>{item.name}</Table.Cell>
-                        <Table.Cell>{item.price}</Table.Cell>
+                        <Table.Cell>{`$${item.price}`}</Table.Cell>
                         <Table.Cell>
                           <Button
                             icon

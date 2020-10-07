@@ -31,6 +31,20 @@ export default class ModalForm extends Component {
           }}
         >
           <Form.Field required>
+            <label>Date Sold</label>
+            <Form.Input
+              type="date"
+              onChange={(e) =>
+                this.setState({
+                  dateSold: e.target.value,
+                })
+              }
+              placeholder="Date Sold"
+              value={this.state.dateSold}
+              required
+            />
+          </Form.Field>
+          <Form.Field required>
             <label>Customer Name</label>
             <Dropdown
               placeholder="Customer"
@@ -77,20 +91,6 @@ export default class ModalForm extends Component {
                   storeId: value,
                 });
               }}
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label>Date Sold</label>
-            <Form.Input
-              type="date"
-              onChange={(e) =>
-                this.setState({
-                  dateSold: e.target.value,
-                })
-              }
-              placeholder="Date Sold"
-              value={this.state.dateSold}
-              required
             />
           </Form.Field>
         </Form>

@@ -240,14 +240,14 @@ export default class Sales extends Component {
                   this.showModal();
                 }}
               >
-                New Record
+                New Sale
               </Button>
             </Grid.Row>
 
             <Modal
               open={this.state.show}
               onClose={this.hideModal}
-              header={'Add Sales Details'}
+              header={'Create Sales'}
             >
               <AddSales
                 type="Create"
@@ -260,7 +260,7 @@ export default class Sales extends Component {
             <Modal
               open={this.state.editmodal}
               onClose={this.hideEditModal}
-              header={'Edit Sales Details'}
+              header={'Edit Sales'}
             >
               <EditSales
                 onSubmit={this.handleEdit}
@@ -274,7 +274,7 @@ export default class Sales extends Component {
             <DeletModal
               openmodal={this.state.deletemodal}
               onClose={this.hideDeleteModal}
-              header={'Delete Store Details'}
+              header={'Delete Sales'}
               onDelete={this.handleDelete}
             />
             <Grid.Row>

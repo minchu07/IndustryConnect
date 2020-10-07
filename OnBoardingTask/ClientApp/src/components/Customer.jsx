@@ -13,7 +13,7 @@ import DeleteModal from './DeleteModal';
 import Modal from './Modal';
 import CreateForm from './CreateForm';
 
-export default class Customer extends Component {
+export default class Customers extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,9 +26,8 @@ export default class Customer extends Component {
       address: '',
       id: '',
       rowDetails: '',
-      page: 2,
-      itemsPerPage: 10,
-      url: 'https://mvponboardingtask.azurewebsites.net',
+      page: 1,
+      itemsPerPage: 1,
     };
   }
 
@@ -167,14 +166,14 @@ export default class Customer extends Component {
             <Modal
               open={this.state.show}
               onClose={this.hideModal}
-              header={'Add Customer'}
+              header={'Create Customer'}
             >
               <CreateForm onSubmit={this.handleInsert}></CreateForm>
             </Modal>
             <Modal
               open={this.state.editmodal}
               onClose={this.hideEditModal}
-              header={'Edit Customer Details'}
+              header={'Edit Customer'}
             >
               <EditForm
                 type="Edit"
@@ -185,7 +184,7 @@ export default class Customer extends Component {
             <DeleteModal
               openmodal={this.state.deletemodal}
               onClose={this.hideDeleteModal}
-              header={'Delete Customer Details'}
+              header={'Delete Customer'}
               onDelete={this.handleDelete}
             />
             <Grid.Row>

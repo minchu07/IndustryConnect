@@ -10,7 +10,7 @@ export default class Home extends Component {
           <Grid>
             <Grid.Row>
               <Header as="h1" textAlign="left">
-                On-Boarding Task- 1
+                React
               </Header>
             </Grid.Row>
             <Grid.Row>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Customer from './components/Customer';
+import Customers from './components/Customer';
 import Sales from './components/Sales';
-import Product from './components/Products';
-import Store from './components/Store';
+import Products from './components/Products';
+import Stores from './components/Store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 
@@ -15,10 +15,10 @@ export default class App extends Component {
       <div>
         <Router>
           <Layout>
-            <Route path="/" exact render={() => <Sales />} />
-            <Route path="/customer" exact render={() => <Customer />} />
-            <Route path="/store" exact render={() => <Store />} />
-            <Route path="/product" exact render={() => <Product />} />
+            <Route path="/" exact render={() => <Customers />} />
+            <Route path="/sales" exact render={() => <Sales />} />
+            <Route path="/stores" exact render={() => <Stores />} />
+            <Route path="/products" exact render={() => <Products />} />
           </Layout>
         </Router>
       </div>

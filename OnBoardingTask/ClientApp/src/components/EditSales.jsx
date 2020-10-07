@@ -57,6 +57,16 @@ export default class EditSales extends Component {
           }}
         >
           <Form.Field>
+            <label>Date Sold</label>
+            <Form.Input
+              name="dateSold"
+              type="date"
+              onChange={this.handleChange}
+              placeholder="Date Sold"
+              value={date}
+            />
+          </Form.Field>
+          <Form.Field>
             <label>Customer Name</label>
             <Dropdown
               name="customerId"
@@ -93,16 +103,6 @@ export default class EditSales extends Component {
               options={this.props.stores}
               value={this.state.storeId}
               onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Date Sold</label>
-            <Form.Input
-              name="dateSold"
-              type="date"
-              onChange={this.handleChange}
-              placeholder="Date Sold"
-              value={date}
             />
           </Form.Field>
         </Form>

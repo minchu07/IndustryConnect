@@ -19,42 +19,42 @@ export default class NavBar extends Component {
         <Container fluid>
           <Menu inverted size="large" fluid stackable>
             <Menu.Item as={'h3'} header>
-              On-Board Task
+              React{' '}
             </Menu.Item>
             <Menu.Item
               as={NavLink}
               to="/"
+              name="Customers"
+              color="black"
+              active={activeItem === 'Customers'}
+              content="Customers"
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item
+              as={NavLink}
+              to="/products"
+              name="Products"
+              color="black"
+              active={activeItem === 'Products'}
+              content="Products"
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item
+              as={NavLink}
+              to="/stores"
+              name="Stores"
+              color="black"
+              active={activeItem === 'Stores'}
+              content="Stores"
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item
+              as={NavLink}
+              to="/sales"
               name="Sales"
               color="black"
               active={activeItem === 'Sales'}
               content="Sales"
-              onClick={this.handleItemClick}
-            />
-            <Menu.Item
-              as={NavLink}
-              to="/customer"
-              name="Customer"
-              color="black"
-              active={activeItem === 'Customer'}
-              content="Customer"
-              onClick={this.handleItemClick}
-            />
-            <Menu.Item
-              as={NavLink}
-              to="/store"
-              name="Store"
-              color="black"
-              active={activeItem === 'Store'}
-              content="Store"
-              onClick={this.handleItemClick}
-            />
-            <Menu.Item
-              as={NavLink}
-              to="/product"
-              name="Product"
-              color="black"
-              active={activeItem === 'Product'}
-              content="Product"
               onClick={this.handleItemClick}
             />
           </Menu>
